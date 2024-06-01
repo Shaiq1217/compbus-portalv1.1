@@ -1,4 +1,5 @@
 const StatusCodes = require('http-status-codes');
+const utils = require('../utils/Utility.js');
 
 function error(err, req, res, next) {
   if (err && err.details) {
@@ -22,4 +23,12 @@ function ensureAuthenticated(req, res, next) {
     return res.status(401).send('Unauthorized');
   }
 }
-module.exports = { error, ensureAuthenticated };
+
+function ensureAdmin(req, res, next) {
+  if (req.user.role === utils.userRoles.ADMIN) {
+    return next();
+  } else {
+    return res.status(403).send('Forbidden');
+  }
+}
+module.exports = { error, ensureAuthenticated , ensureAdmin};

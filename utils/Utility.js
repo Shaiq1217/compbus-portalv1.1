@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const { Mixed } = mongoose.Schema.Types;
+const User = require('../models/User');
 
 class Utility {
   standardizeInput(input) {
@@ -10,6 +11,19 @@ class Utility {
     ADMIN: 'admin',
     USER: 'user'
   };
+  async isFirstUser() {
+    return User.countDocuments({}).then(count => count === 0);
+  }
+
+  userProps = [
+    'id',
+    'username',
+    'email',
+    'isDeleted',
+    'isGoogleAuth',
+    'role'
+    
+  ]
 
   async createModel(input) {
     const { name, description } = input.body;
