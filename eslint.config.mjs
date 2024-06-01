@@ -10,7 +10,7 @@ export default [
     },
     rules: {
       // Airbnb Rules
-      "comma-dangle": ["error", "never"],
+      "comma-dangle": ["warning", "never"],
       "no-cond-assign": ["error", "always"],
       "no-console": "off",
       "no-constant-condition": ["error", { "checkLoops": false }],
