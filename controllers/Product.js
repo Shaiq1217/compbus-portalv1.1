@@ -48,7 +48,7 @@ class Products {
     const data = [];
     const filteredProducts = products.filter(product => !(product.isDeleted && !product.productId));
     for (const product of filteredProducts) {
-    // Get all products with populated details
+      // Get all products with populated details
       const fetchedProduct = await Product.find({})
         .populate({ path: 'detail', model: product.category }); // Populate details based on product's category
       data.push(fetchedProduct);
@@ -97,7 +97,15 @@ class Products {
       .status(statusCodes.StatusCodes.OK)
       .json({ status: true, message: 'Product Field Details', data: fieldInfoArray });
   }
-
+  async getProductById(req, res) {
+    const { id } = req.params;
+    const product = await Product
+      .findById(id)
+    if (!product) {
+      return res.status(statusCodes.StatusCodes.BAD_REQUEST).json({ status: false, message: 'Invalid Product' });
+    }
+    return res.status(statusCodes.StatusCodes.OK).json({ status: true, message: 'Product found', data: product });
+  }
   /*
   * POST METHODS
   */
@@ -133,7 +141,6 @@ class Products {
     const data = await newProduct.save();
     return res.status(statusCodes.StatusCodes.OK).json({ status: true, message: 'Product Created', data });
   }
-
   async createProductDetails(req, res) {
     const { categoryId, id } = req.params;
     const category = await Category.findById(categoryId);

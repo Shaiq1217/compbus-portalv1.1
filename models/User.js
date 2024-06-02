@@ -6,6 +6,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String },
   googleId: { type: String },
   isGoogleAuth: { type: Boolean, 'default': false },
+  shippingAddress: { type: String },
   role: { type: String, required: true, 'default': 'user' },
   isDeleted: { type: Boolean, 'default': false }
 }, {

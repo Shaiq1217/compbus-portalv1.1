@@ -12,7 +12,7 @@ class Users {
    */
   async signup(req, res) {
     const { username, email, password } = req.body;
-    if(await utils.isFirstUser()) {
+    if (await utils.isFirstUser()) {
       const user = new User({
         username,
         email,
@@ -35,17 +35,17 @@ class Users {
     await user.save();
     return res.status(statusCodes.StatusCodes.CREATED).json({ status: true, message: 'User created successfully' });
   }
-  async login(req, res) { 
+  async login(req, res) {
     passport.authenticate('local', {
       successRedirect: '/api/auth/self',
-      failureRedirect: '/api/auth/failure' 
+      failureRedirect: '/api/auth/failure'
     })(req, res);
   }
   userLogout(req, res) {
     req.logout();
     return res.redirect('/api/auth/failure');
   }
-  requestLogin(req, res) { 
+  requestLogin(req, res) {
     return res.status(statusCodes.StatusCodes.OK).json({ status: true, message: 'Login/Signup required' });
   }
   async setRoleForUser(req, res) {
@@ -56,6 +56,16 @@ class Users {
     await user.save();
 
     return res.status(statusCodes.StatusCodes.ACCEPTED).json({ status: true, message: 'Role set successfully' });
+  }
+  async updateProfile(req, res) {
+    const { email } = req.user;
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(statusCodes.StatusCodes.NOT_FOUND).json({ status: false, message: 'User not found' });
+    }
+    Object.assign(user, req.body);
+    await user.save();
+    return res.status(statusCodes.StatusCodes.ACCEPTED).json({ status: true, message: 'Profile updated successfully' });
   }
   /**
    * ************************************************************
@@ -72,7 +82,7 @@ class Users {
   }
   async getUser(req, res) {
     const { email } = req.user;
-    const user = await User.findOne({email});
+    const user = await User.findOne({ email });
     if (!user) {
       return res.status(statusCodes.StatusCodes.NOT_FOUND).json({ status: false, message: 'User not found' });
     }
@@ -89,7 +99,7 @@ class Users {
    * ************************************************************
    */
   googleSignup(req, res) {
-    return res.send('<a href="/api/auth/google">Login with Google</a>'); 
+    return res.send('<a href="/api/auth/google">Login with Google</a>');
   }
   googleAuthenticator(req, res) {
     passport.authenticate('google', {
@@ -97,10 +107,10 @@ class Users {
       failureRedirect: 'api/auth/failure'
     })(req, res)
   }
-  googleLogin(req,res){
+  googleLogin(req, res) {
     passport.authenticate('google', { scope: ['profile', 'email'] })(req, res)
   }
-  
+
 }
 
 const user = new Users();
