@@ -81,7 +81,7 @@ class Orders {
   }
   async updateOrder(req, res) {
     const { id } = req.params;
-    const order = Order.findById({ _id: id });
+    const order = await Order.findById(id);
     if (!order) {
       return res.status(statusCodes.StatusCodes.NOT_FOUND).json({ status: false, message: 'Order not found' });
     }
@@ -91,13 +91,14 @@ class Orders {
 
   }
 
-  deleteOrder(req, res) {
+  async deleteOrder(req, res) {
     const { id } = req.params;
+    const order = await Order.findById(id);
     if (!order) {
       return res.status(statusCodes.StatusCodes.NOT_FOUND).json({ status: false, message: 'Order not found' });
     }
-    const order = Order.findByIdAndUpdate(id);
     order.isDeleted = true;
+    order.save();
     return res.status(statusCodes.StatusCodes.OK).json({ status: true, message: 'Order deleted' });
   }
 }
