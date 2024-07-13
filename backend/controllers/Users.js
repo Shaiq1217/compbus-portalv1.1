@@ -36,9 +36,21 @@ class Users {
     return res.status(statusCodes.StatusCodes.CREATED).json({ status: true, message: 'User created successfully' });
   }
   async login(req, res) {
-    passport.authenticate('local', {
-      successRedirect: '/api/auth/self',
-      failureRedirect: '/api/auth/failure'
+    passport.authenticate('local', (err, user, info) => {
+      if (err) {
+        return res.status(500).json({ message: 'An error occurred during authentication', status: false, data: err });
+      }
+      if (!user) {
+        return res.status(401).json({ message: 'Invalid credentials', status: false });
+      }
+      req.login(user, (err) => {
+        if (err) {
+          return res.status(500).json({ message: 'Login failed', status: false, error: err });
+        }
+        const data = _.pick(user, utils.userProps);
+
+        return res.json({ message: 'Login successful', status: true, data });
+      });
     })(req, res);
   }
   userLogout(req, res) {

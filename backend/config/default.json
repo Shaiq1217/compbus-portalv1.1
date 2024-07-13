@@ -11,6 +11,7 @@
       "uri": "mongodb://localhost:27017/compbusv1"
     }
   },
+  "secret": "cats",
   "google": {
     "client_id": "574780300074-ebkgp14bbq7ps7j05ddvbk4bd3qm9vcg.apps.googleusercontent.com",
     "project_id": "compbus-1",

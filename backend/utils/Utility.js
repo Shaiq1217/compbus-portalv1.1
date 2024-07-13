@@ -22,7 +22,7 @@ class Utility {
     'isDeleted',
     'isGoogleAuth',
     'role'
-    
+
   ]
 
   async createModel(input) {

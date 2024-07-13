@@ -9,7 +9,7 @@ const { error, ensureAuthenticated } = require('../middleware/errorAndAuth.js');
 module.exports = function (app) {
   app.use('/api/auth', auth);
   app.use('/api/category', ensureAuthenticated, category);
-  app.use('/api/product', ensureAuthenticated, product);
+  app.use('/api/product', product);
   app.use('/api/order', ensureAuthenticated, order);
   app.use(error);
 };
