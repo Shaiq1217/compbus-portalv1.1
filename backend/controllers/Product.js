@@ -171,7 +171,36 @@ class Products {
     await product.save();
     return res.status(statusCodes.StatusCodes.OK).json({ status: true, msessage: 'Product Created', data });
   }
+  /*
+   * PUT METHODS
+   */
+
+  async updateProduct(req, res) {
+
+    const { id } = req.params;
+    const product = await Product.findById(id);
+
+    if (!product) {
+      return res.status(statusCodes.StatusCodes.BAD_REQUEST).json({ status: false, message: 'Invalid Product' });
+    }
+
+    const updatedProduct = {};
+    const updatableFields = ['name', 'price', 'quantity', 'image', 'description', 'tags', 'discount', 'categoryId'];
+
+    updatableFields.forEach(field => {
+      if (req.body[field] !== undefined) {
+        updatedProduct[field] = req.body[field];
+      }
+    });
+
+    const data = await Product.findByIdAndUpdate(id, updatedProduct, { new: true });
+
+    return res.status(statusCodes.StatusCodes.OK).json({ status: true, message: 'Product Updated', data });
+  }
 }
+
+
+
 
 const product = new Products();
 module.exports = product;
