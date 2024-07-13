@@ -1,0 +1,79 @@
+{
+  "hash": "d70bceb3",
+  "configHash": "9d9f7883",
+  "lockfileHash": "20526f3d",
+  "browserHash": "88dc77ba",
+  "optimized": {
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "a71f2a40",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "a710ae6e",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "f8b5589b",
+      "needsInterop": true
+    },
+    "@tanstack/react-query": {
+      "src": "../../node_modules/@tanstack/react-query/build/modern/index.js",
+      "file": "@tanstack_react-query.js",
+      "fileHash": "c7dc5b9c",
+      "needsInterop": false
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.js",
+      "file": "react-router-dom.js",
+      "fileHash": "e6f448cd",
+      "needsInterop": false
+    },
+    "@mui/material": {
+      "src": "../../node_modules/@mui/material/index.js",
+      "file": "@mui_material.js",
+      "fileHash": "f09918b0",
+      "needsInterop": false
+    },
+    "react-hook-form": {
+      "src": "../../node_modules/react-hook-form/dist/index.esm.mjs",
+      "file": "react-hook-form.js",
+      "fileHash": "0df65661",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "816999d5",
+      "needsInterop": false
+    },
+    "@mui/system": {
+      "src": "../../node_modules/@mui/system/esm/index.js",
+      "file": "@mui_system.js",
+      "fileHash": "76880bb4",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-B7DCXOQC": {
+      "file": "chunk-B7DCXOQC.js"
+    },
+    "chunk-IM3G5S7A": {
+      "file": "chunk-IM3G5S7A.js"
+    },
+    "chunk-TZ2R3E32": {
+      "file": "chunk-TZ2R3E32.js"
+    },
+    "chunk-U3MRAZKL": {
+      "file": "chunk-U3MRAZKL.js"
+    },
+    "chunk-7TNKEIRG": {
+      "file": "chunk-7TNKEIRG.js"
+    }
+  }
+}

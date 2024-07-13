@@ -16,11 +16,11 @@ const Product = () => {
       ) : (
         <Grid container spacing={3}>
           {products?.map((product) => (
-            <Grid item xs={12} sm={6} md={4} key={product.id}>
+            <Grid item xs={12} sm={6} md={4} key={product.id} >
               <Card>
                 <CardMedia
                   component="img"
-                  height="140"
+                  height="200"
                   image={product.image}
                   alt={product.name}
                 />
@@ -32,13 +32,13 @@ const Product = () => {
                     {product.description}
                   </Typography>
                   <Typography variant="body1" color="text.primary">
-                    Price: ${product.price}
+                    ${product.price}
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
-                    Quantity: {product.quantity}
+                    {product.quantity ? `${product.quantity} left` : 'Out of stock'}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Tags: {product.tags?.join(', ')}
+                  <Typography variant="subtitle1" color="text.secondary">
+                    {product.tags?.join(', ')}
                   </Typography>
                 </CardContent>
               </Card>
