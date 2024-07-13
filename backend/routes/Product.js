@@ -9,5 +9,6 @@ router.get('/category/:categoryId', product.getProductByCategory);
 router.get('/:id/field', product.getProductFieldDetails);
 router.post('/', product.createProduct);
 router.post('/:id/category/:categoryId', product.createProductDetails);
+router.put('/:id', product.updateProduct);
 
 module.exports = router;

@@ -24,11 +24,11 @@ class Products {
     return res.status(statusCodes.StatusCodes.OK).json({ status: true, message: 'All Products listed', data });
   }
 
-  async getAllProducts(req, res) {
-    // Get all categories
+  async getAllProducts(req, res) {     // Get all categories
     const categories = await Category.find();
     const products = await Product.find();
     const names = categories.map(category => category.name);
+
     // Filter out models that need to be created
     const modelsToMake = names.filter(category => !mongoose.modelNames().includes(category));
 
@@ -45,19 +45,28 @@ class Products {
 
     // Wait for all model creation promises to resolve
     await Promise.all(namedModelsPromises);
-    const data = [];
-    const filteredProducts = products.filter(product => !(product.isDeleted && !product.productId));
-    for (const product of filteredProducts) {
-      // Get all products with populated details
-      const fetchedProduct = await Product.find({})
-        .populate({ path: 'detail', model: product.category }); // Populate details based on product's category
-      data.push(fetchedProduct);
-    }
-    // Filter out deleted products without details
 
-    return res
-      .status(statusCodes.StatusCodes.OK)
-      .json({ status: true, message: 'All Products listed', data });
+    // Filter out deleted products without details
+    const filteredProducts = products.filter(product => !(product.isDeleted && !product.productId));
+
+    // Populate product details based on their categories
+    const populatedProducts = await Promise.all(
+      filteredProducts.map(async (product) => {
+        const fetchedProduct = await Product.findById(product._id)
+          .populate({ path: 'detail', model: product.category });
+        return fetchedProduct;
+      })
+    );
+
+    // Flatten the array if necessary
+    const flatPopulatedProducts = populatedProducts.flat();
+
+    // Return response with populated products
+    return res.status(statusCodes.StatusCodes.OK).json({
+      status: true,
+      message: 'All Products listed',
+      data: flatPopulatedProducts
+    });
   }
 
 
