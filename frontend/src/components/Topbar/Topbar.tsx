@@ -5,6 +5,7 @@ import { Menu as MenuIcon, Search as SearchIcon } from '@mui/icons-material';
 import { useScrollTrigger } from '@mui/material';
 import clsx from 'clsx';
 import SideMenu from '../SideMenu/SideMenu';
+import Spinner from '../Spinner/Spinner';
 
 const height = 'auto'
 
@@ -19,13 +20,17 @@ const StyledAppBar = styled(AppBar)(({ theme }: { theme: Theme }) => ({
 
   },
   '&.elevated': {
-    backgroundColor: '#333', // Black background when scrolled
+    backgroundColor: '#22333b', // Black background when scrolled
     boxShadow: theme.shadows[4],
 
   },
 }));
 
-const TopBar = () => {
+interface TopBarProps {
+  setSearch: React.Dispatch<React.SetStateAction<boolean>>;
+
+}
+const TopBar = ({ setSearch }: TopBarProps) => {
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 100,
@@ -34,6 +39,9 @@ const TopBar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const handleMenuOpen = () => {
     setIsOpen(true);
+  }
+  const handleSearchDisplay = () => {
+    setSearch(true);
   }
   return (
     <>
@@ -51,7 +59,7 @@ const TopBar = () => {
           </Typography>
           <div className="flex items-center">
             <div className="relative">
-              <IconButton sx={{ color: baseColor }} aria-label="search" size='small'>
+              <IconButton sx={{ color: baseColor }} aria-label="search" size='small' onClick={() => handleSearchDisplay()}>
                 <SearchIcon fontSize='small' />
               </IconButton>
             </div>
@@ -65,5 +73,7 @@ const TopBar = () => {
     </>
   );
 };
+
+
 
 export default TopBar;

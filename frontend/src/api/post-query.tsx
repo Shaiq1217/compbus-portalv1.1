@@ -1,7 +1,7 @@
 import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import axios from './axios';
-import { GetData, IResponse } from '../types/shared'; // Assuming you have defined these types
-import { ILogin, IUser } from '../types/user';
+import { GetData, IResponse } from '../@types/shared/shared'; // Assuming you have defined these types
+import { ILogin, IUser } from '../@types/shared/user';
 
 interface GetApi {
   login: GetData<ILogin, IUser>;

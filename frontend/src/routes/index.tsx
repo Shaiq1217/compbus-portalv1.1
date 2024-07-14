@@ -4,6 +4,7 @@ import FeaturedItems from '../container/Product/Product';
 import { RequireAuth } from '../utils/requireAuth';
 import PageLayout from '../pages/BasePage/PageLayout';
 import Home from '../pages/home/Home';
+import Product from 'src/pages/Product/Product';
 
 
 
@@ -17,6 +18,10 @@ const AppRoutes = () => {
             <Home />
           </PageLayout>} />
       </Route>
+      <Route path="/products/:productId" element={
+        <PageLayout >
+          <Product />
+        </PageLayout>} />
     </Routes>
   );
 };
