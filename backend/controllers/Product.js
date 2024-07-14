@@ -145,7 +145,6 @@ class Products {
       category: category.name,
       productId: null
     };
-    console.log(productToSave);
     const newProduct = new Product(productToSave);
     const data = await newProduct.save();
     return res.status(statusCodes.StatusCodes.OK).json({ status: true, message: 'Product Created', data });
