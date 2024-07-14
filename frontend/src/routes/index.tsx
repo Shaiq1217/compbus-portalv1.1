@@ -1,8 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
 import Login from '../pages/Login/Login';
-import Product from '../pages/Product/Product';
+import FeaturedItems from '../container/Product/Product';
 import { RequireAuth } from '../utils/requireAuth';
-// import SignUpPage from "../pages/signup/signup";
+import PageLayout from '../pages/BasePage/PageLayout';
+import Home from '../pages/home/Home';
+
 
 
 const AppRoutes = () => {
@@ -10,8 +12,10 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route element={<RequireAuth />}>
-        <Route path="/" element={<Product />} />
-        {/* <Route path="notfication/:eventId/edit/:id" element={<EditScreen />} /> */}
+        <Route path="/" element={
+          <PageLayout >
+            <Home />
+          </PageLayout>} />
       </Route>
     </Routes>
   );

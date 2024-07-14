@@ -1,0 +1,9 @@
+/* index.css or your custom stylesheet */
+.custom-scrollbar {
+  scrollbar-width: thin; 
+  scrollbar-color: #b9b9b9 #f3f3f3; 
+  padding: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}

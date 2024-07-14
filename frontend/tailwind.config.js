@@ -1,4 +1,5 @@
-/** @type {import('tailwindcss').Config} */
+// tailwind.config.js
+
 export default {
   content: [
     "./index.html",
@@ -7,6 +8,23 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
-}
-
+  plugins: [
+    require('tailwind-scrollbar-hide'),
+  ],
+  variants: {
+    extend: {
+      scrollbar: ['rounded'],
+      // Define no-scrollbar variant
+      scrollbar: ['rounded'],
+      // Extend utilities with no-scrollbar
+      extend: {
+        scrollbar: ['rounded'],
+        // Extend utilities with no-scrollbar
+        extend: {
+          scrollbar: ['rounded'],
+          'scrollbar-hide': ['rounded'],
+        },
+      },
+    },
+  },
+};
