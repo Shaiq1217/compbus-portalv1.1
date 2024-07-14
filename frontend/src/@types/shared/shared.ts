@@ -1,3 +1,6 @@
+import { IconProps } from "@mui/material";
+import { ComponentType, ReactNode } from "react";
+
 export interface IResponse<T>{
     message?: string;
     status? : boolean;
@@ -11,4 +14,12 @@ export type GetData<T, U> = {
 
 export type Api = {
     [endpoint: string]: GetData<any, any>;
+  };
+
+
+export type ISectionCard = {
+    Icon: ComponentType<IconProps>;
+    title?: string;
+    subtitle?: string;
+    description?: string;
   };

@@ -3,11 +3,16 @@ import { createTheme, colors } from '@mui/material';
 const theme = createTheme({
   palette: {
     primary: {
-      main: colors.blue[500],
+      main: "#22333b",
+      "100": "#f0f4f8",
     },
     secondary: {
-      main: '#dc004e',
+      main: '#7392B7',
     },
+  },
+  typography: {
+    fontWeightLight: 'lighter',
+
   },
   components: {
     MuiToolbar: {

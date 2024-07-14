@@ -1,7 +1,7 @@
 import { useForm, Controller } from 'react-hook-form';
 import { Button, FormControl, FormHelperText, Input, InputLabel, Grid, Typography } from '@mui/material';
 import usePostMutation from '../../api/post-query';
-import { ILogin, IUser } from '../../types/user';
+import { ILogin, IUser } from '../../@types/shared/user';
 import { useNavigate } from 'react-router-dom';
 interface LoginFormInputs {
   email: string;
