@@ -1,15 +1,30 @@
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Button, Typography, useTheme, Grid, Container } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { IProduct } from 'src/@types/shared';
+import useGetQuery from 'src/api/get-query';
+import ImageViewer from '../ImageViewer/ImageViewer';
+import Spinner from '../Spinner/Spinner';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 interface ProductDetailProps {
     productDetail: IProduct;
 }
 
-const ProductDetail: React.FC<ProductDetailProps> = ({ productDetail }) => {
+interface DetailField {
+    name: string;
+    required: boolean;
+    type: 'number' | 'string' | 'boolean';
+    min?: number;
+    max?: number;
+}
+
+const ProductDetail = ({ productDetail }: ProductDetailProps) => {
     const theme = useTheme();
+    const { data: details, isLoading, error } = useGetQuery<any, DetailField[]>('productDetail', productDetail._id);
     const [date, setDate] = useState<string | undefined>(undefined);
     const [discountedPrice, setDiscountedPrice] = useState<number | undefined>(undefined);
+    const [isImageViewerOpen, setIsImageViewerOpen] = useState(false);
 
     useEffect(() => {
         if (productDetail.updatedAt) {
@@ -35,60 +50,114 @@ const ProductDetail: React.FC<ProductDetailProps> = ({ productDetail }) => {
         }
     }, [productDetail.discount, productDetail.price]);
 
+    const handleImageClick = () => {
+        setIsImageViewerOpen(true);
+    };
+
+    const handleCloseImageViewer = () => {
+        setIsImageViewerOpen(false);
+    };
+
     return (
-        <Box display="flex" alignItems="center" justifyContent="center" mt={4}>
-            <Box>
-                <img
-                    src={productDetail.image}
-                    alt={productDetail.name}
-                    style={{ width: '100%', maxWidth: '300px', height: 'auto' }}
-                />
-            </Box>
-            <Box ml={4} maxWidth="600px">
-                <Typography variant="h3" gutterBottom color={theme.palette.primary.main} fontWeight={theme.typography.fontWeightBold}>
-                    {productDetail.name}
-                </Typography>
-                {productDetail.category && (
-                    <Typography variant="body2" color={theme.palette.secondary.dark}>
-                        {productDetail.category.toUpperCase()}
-                    </Typography>
-                )}
-                {discountedPrice !== undefined ? (
-                    <>
-                        <Typography variant="h5" gutterBottom>
-                            <Box component="span" sx={{ textDecoration: 'line-through', color: productDetail.discount ? 'red' : 'black' }}>
-                                ${productDetail.price}
-                            </Box>
-                            &nbsp; ${discountedPrice.toFixed(2)}
-                        </Typography>
-                        {productDetail.discount !== undefined && productDetail.discount > 0 && (
-                            <Typography variant="h5" color="error">
-                                {productDetail.discount}% off
+        <>
+            <Grid container spacing={2} >
+                <Container sx={{ display: 'flex', alignItems: 'center', marginTop: '3rem' }} >
+                    <Grid item xs={12} md={6}>
+                        <Box display="flex" justifyContent="center" alignItems="center">
+                            <img
+                                src={productDetail.image}
+                                alt={productDetail.name}
+                                style={{ maxWidth: '100%', height: 'auto', cursor: 'pointer', margin: 'auto' }}
+                                onClick={handleImageClick}
+                            />
+                        </Box>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Box display="flex" justifyContent="center" alignItems="flex-start" flexDirection="column" sx={{
+                            marginInline: '2rem'
+                        }}>
+                            <Typography variant="h3" gutterBottom color={theme.palette.primary.main} fontWeight={theme.typography.fontWeightBold}>
+                                {productDetail.name}
                             </Typography>
-                        )}
-                    </>
-                ) : (
-                    <Typography variant="h6" gutterBottom>
-                        ${productDetail.price}
-                    </Typography>
-                )}
+                            {productDetail.category && (
+                                <Typography variant="body2" color={theme.palette.secondary.dark}>
+                                    {productDetail.category.toUpperCase()}
+                                </Typography>
+                            )}
+                            {discountedPrice !== undefined ? (
+                                <>
+                                    <Typography variant="h5" gutterBottom>
+                                        <Box component="span" sx={{ fontSize: '2rem' }}>${discountedPrice.toFixed(2)}</Box> &nbsp;
+                                        <Box component="span" sx={{ textDecoration: 'line-through', color: 'red' }}>
+                                            ${productDetail.price}
+                                        </Box>
+                                    </Typography>
+                                    <Typography variant="body1" sx={{ color: 'red' }}>
+                                        {productDetail.discount}% off
+                                    </Typography>
+                                </>
+                            ) : (
+                                <Typography variant="h6" gutterBottom>
+                                    ${productDetail.price}
+                                </Typography>
+                            )}
 
-                <Typography variant="body1" gutterBottom>
-                    {productDetail.description}
-                </Typography>
-                {productDetail.quantity !== undefined && (
-                    <Typography variant="body2" color="textSecondary">
-                        {productDetail.quantity} in stock
-                    </Typography>
-                )}
-                {productDetail.updatedAt && (
-                    <Typography variant="body2" color="textSecondary">
-                        Uploaded At: {date}
-                    </Typography>
-                )}
+                            <Typography variant="body1" gutterBottom>
+                                {productDetail.description}
+                            </Typography>
+                            {productDetail.quantity !== undefined && (
+                                <Typography variant="body2" color="textSecondary">
+                                    {productDetail.quantity} in stock
+                                </Typography>
+                            )}
+                            {productDetail.updatedAt && (
+                                <Typography variant="body2" color="textSecondary">
+                                    Uploaded At: {date}
+                                </Typography>
+                            )}
 
-            </Box>
-        </Box>
+                            {isLoading ? <Spinner /> : (details && (
+                                <Box mt={2}>
+                                    <Typography variant="h6" gutterBottom>
+                                        Product Details:
+                                    </Typography>
+                                    {details.map((detail) => (
+                                        <Typography key={detail.name} variant="body2" color="textSecondary">
+                                            {detail.name}: {productDetail.detail[detail.name]}
+                                        </Typography>
+                                    ))}
+                                </Box>
+                            ))}
+                            <Box display="flex" justifyContent="space-between" mt={4} width="100%">
+                                <Button
+                                    variant="outlined"
+                                    color="primary"
+                                    startIcon={<AddShoppingCartIcon />}
+                                    sx={{ flex: 1, mr: 1, height: '3rem', width: 'calc(50% - 8px)' }}
+                                >
+                                    Add to Cart
+                                </Button>
+                                <Button
+                                    variant="contained"
+                                    color="primary"
+                                    startIcon={<ShoppingCartIcon />}
+                                    sx={{ flex: 1, ml: 1, height: '3rem', width: 'calc(50% - 8px)' }}
+                                >
+                                    Buy Now
+                                </Button>
+                            </Box>
+                        </Box>
+                    </Grid>
+                </Container>
+            </Grid>
+
+            {isImageViewerOpen && (
+                <ImageViewer
+                    imageUrl={productDetail.image!}
+                    onClose={handleCloseImageViewer}
+                />
+            )}
+        </>
     );
 };
 

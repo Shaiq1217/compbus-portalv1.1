@@ -1,4 +1,3 @@
-/* eslint-disable quote-props */
 const mongoose = require('mongoose');
 
 const commonFields = {
@@ -14,6 +13,7 @@ const commonFields = {
   category: { type: String, required: true },
   isDeleted: { type: Boolean, default: false }
 };
+
 const productSchema = new mongoose.Schema(
   {
     ...commonFields,
@@ -24,7 +24,9 @@ const productSchema = new mongoose.Schema(
   }
 );
 
+// Define text indexes
+productSchema.index({ name: 'text', description: 'text', tags: 'text' });
+
 const Product = mongoose.model('Product', productSchema);
 
-module.exports =
-  Product;
+module.exports = Product;

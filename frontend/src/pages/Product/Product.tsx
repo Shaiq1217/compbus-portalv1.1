@@ -7,10 +7,13 @@ import Spinner from 'src/components/Spinner/Spinner';
 const Product = () => {
     let { productId } = useParams();
     const { data: productDetail, isLoading, error } = useGetQuery<IProduct, IProduct>('product', productId);
-    console.log(productDetail)
+
     return (
         <div >
             {isLoading ? <Spinner /> : <ProductDetail productDetail={productDetail!} />}
+            <div style={{ height: '10vh' }}>
+                sadjkflskdjf
+            </div>
         </div>
     );
 };

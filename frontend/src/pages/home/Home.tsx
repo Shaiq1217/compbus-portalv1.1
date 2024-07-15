@@ -1,6 +1,7 @@
 
 
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { IProduct } from 'src/@types/shared';
 import useGetQuery from 'src/api/get-query';
 import ProductCard from 'src/components/ProductCard/ProductCard';
@@ -15,9 +16,16 @@ import BannerSectionCards from 'src/utils/BannerSectionCards';
 
 const Home = () => {
   const { data: products, isLoading } = useGetQuery<IProduct[], IProduct[]>('product');
+  const [productId, setProductId] = useState<string | undefined>(undefined);
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (productId) {
+      navigate(`/products/${productId}`);
+    }
+  }, [productId]);
   const renderProductCard = (product: IProduct) => (
     <div >
-      <ProductCard product={product} />
+      <ProductCard product={product} setProductId={setProductId} />
     </div>
   );
 

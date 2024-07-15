@@ -57,7 +57,6 @@ class Utility {
   }
 
   checkExistingModel(name) {
-    console.log(mongoose.modelNames());
     return mongoose.modelNames().includes(name);
   }
 }

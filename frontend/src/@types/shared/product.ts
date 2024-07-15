@@ -7,7 +7,7 @@ export type IProduct = {
     price?: number;
     image?: string;
     categoryId?: string,
-    detail: Record<string, unknown>;
+    detail: Record<string, any>;
     discount: number;
     category: string;
     isDeleted?: boolean;

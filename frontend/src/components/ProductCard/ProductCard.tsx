@@ -7,11 +7,14 @@ interface ProductCardProps {
   product: IProduct
   imageHeight?: string
   cardHeight?: string;
+  setProductId: React.Dispatch<React.SetStateAction<string | undefined>>
 }
 
-const ProductCard = ({ product, imageHeight, cardHeight }: ProductCardProps) => {
+const ProductCard = ({ product, imageHeight, cardHeight, setProductId }: ProductCardProps) => {
   const theme = useTheme();
+
   const handleProductPage = (productId: string) => {
+    setProductId(productId);
   }
   return (
     <Card className={`cursor-pointer hover:shadow-lg transition-shadow duration-300 h-[${cardHeight ?? '450px'}] `} onClick={() => handleProductPage(product._id!)}>

@@ -1,5 +1,4 @@
 import {
-  QueryKey,
   useQuery,
   UseQueryResult
 } from '@tanstack/react-query';
@@ -18,6 +17,9 @@ const getApi: GetApi = {
   product: {
     url: '/product',
   },
+  productDetail: {
+    url: '/product/field',
+  },
   category: {
     url: '/category',
   },
@@ -26,13 +28,25 @@ const getApi: GetApi = {
   },
 };
 
+type QueryParams = Record<string, string | number>;
+
 const useGetQuery = <T, U>(
   endpoint: keyof GetApi,
-  id?: string | number // Optional id parameter for productId, categoryId, userId, etc.
+  id?: string | number, // Optional id parameter for productId, categoryId, userId, etc.
+  queryParams?: QueryParams // Optional query parameters
 ): UseQueryResult<U, Error> => {
   const { url } = getApi[endpoint];
 
-  const constructedUrl = id ? `${url}/${id}` : url;
+  let constructedUrl = id ? `${url}/${id}` : url;
+
+  // Append query parameters if provided
+  if (queryParams) {
+    const params = new URLSearchParams();
+    Object.keys(queryParams).forEach(key => {
+      params.append(key, String(queryParams[key]));
+    });
+    constructedUrl += '?' + params.toString();
+  }
 
   const queryFn = async (): Promise<U> => {
     const response = await axios.get<T>(constructedUrl);
@@ -40,7 +54,7 @@ const useGetQuery = <T, U>(
     return (response.data as any).data as U;
   };
 
-  const queryKey = id ? [endpoint, id] : [endpoint];
+  const queryKey = id ? [endpoint, id, queryParams] : [endpoint, queryParams];
 
   return useQuery<U, Error>({
     queryKey,

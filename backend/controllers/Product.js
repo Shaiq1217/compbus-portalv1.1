@@ -23,13 +23,27 @@ class Products {
       .exec();
     return res.status(statusCodes.StatusCodes.OK).json({ status: true, message: 'All Products listed', data });
   }
+  async getAllProducts(req, res) {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const searchQuery = req.query.q;
 
-  async getAllProducts(req, res) {     // Get all categories
+    // Fetch all categories
     const categories = await Category.find();
-    const products = await Product.find();
-    const names = categories.map(category => category.name);
+
+    // Construct query with pagination, limits, and search
+    let query = Product.find();
+    if (searchQuery) {
+      query = query.find({ $text: { $search: searchQuery } });
+    }
+
+    // Apply pagination
+    query = query.skip((page - 1) * limit).limit(limit).lean();
+
+    const products = await query;
 
     // Filter out models that need to be created
+    const names = categories.map(category => category.name);
     const modelsToMake = names.filter(category => !mongoose.modelNames().includes(category));
 
     // Create models for categories that don't have one
@@ -61,15 +75,19 @@ class Products {
     // Flatten the array if necessary
     const flatPopulatedProducts = populatedProducts.flat();
 
-    // Return response with populated products
+    // Count total products for pagination
+    const totalProducts = await Product.countDocuments(searchQuery ? { $text: { $search: searchQuery } } : {});
+
+    // Return response with paginated and searched products
     return res.status(statusCodes.StatusCodes.OK).json({
       status: true,
-      message: 'All Products listed',
-      data: flatPopulatedProducts
+      message: 'Products fetched successfully',
+      data: flatPopulatedProducts,
+      page,
+      totalPages: Math.ceil(totalProducts / limit),
+      totalItems: totalProducts
     });
   }
-
-
   async getProductFieldDetails(req, res) {
     const { id } = req.params;
     const product = await Product.findById(id);
@@ -77,7 +95,6 @@ class Products {
       return res.status(statusCodes.StatusCodes.BAD_REQUEST).json({ status: false, message: 'Invalid Product' });
     }
     const category = await Category.findById(product.categoryId);
-    console.log(category);
     if (!category) {
       return res.status(statusCodes.StatusCodes.BAD_REQUEST).json({ status: false, message: 'Invalid Category' });
     }
@@ -106,6 +123,7 @@ class Products {
       .status(statusCodes.StatusCodes.OK)
       .json({ status: true, message: 'Product Field Details', data: fieldInfoArray });
   }
+
   async getProductById(req, res) {
     const { id } = req.params;
     const product = await Product
@@ -113,7 +131,21 @@ class Products {
     if (!product) {
       return res.status(statusCodes.StatusCodes.BAD_REQUEST).json({ status: false, message: 'Invalid Product' });
     }
-    return res.status(statusCodes.StatusCodes.OK).json({ status: true, message: 'Product found', data: product });
+    const category = await Category.findById(product.categoryId);
+    if (!category) {
+      return res.status(statusCodes.StatusCodes.BAD_REQUEST).json({ status: false, message: 'Invalid Category' });
+    }
+    if (!utils.checkExistingModel(category.name)) {
+      await utils.createModel({
+        body: {
+          name: product.category,
+          description: category.description
+        }
+      });
+    }
+    const fetchedProduct = await Product.findById(product._id)
+      .populate({ path: 'detail', model: product.category });
+    return res.status(statusCodes.StatusCodes.OK).json({ status: true, message: 'Product found', data: fetchedProduct });
   }
   /*
   * POST METHODS
