@@ -9,7 +9,7 @@ import Spinner from 'src/components/Spinner/Spinner';
 import Banner from 'src/container/Banner/Banner';
 import Footer from 'src/container/Footer/Footer';
 import InquirySection from 'src/container/InquirySection/InquirySection';
-import FeaturedItems from 'src/container/Product/Product';
+import FeaturedItems from 'src/container/FeaturedItems/FeaturedItems';
 import SectionCardDisplay from 'src/container/SectionCards/SectionCardDisplay';
 import Testimonials from 'src/container/Testimonials/Testimonals';
 import BannerSectionCards from 'src/utils/BannerSectionCards';

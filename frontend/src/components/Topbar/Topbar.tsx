@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Typography, IconButton, InputBase, CssBaseline, Theme, useTheme } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, InputBase, CssBaseline, Theme, useTheme, Box, Link } from '@mui/material';
 import { styled } from '@mui/system';
 import { Menu as MenuIcon, Search as SearchIcon } from '@mui/icons-material';
 import { useScrollTrigger } from '@mui/material';
 import clsx from 'clsx';
 import SideMenu from '../SideMenu/SideMenu';
 import Spinner from '../Spinner/Spinner';
+import { useNavigate } from 'react-router-dom';
 
 const height = 'auto'
 
@@ -31,6 +32,7 @@ interface TopBarProps {
 
 }
 const TopBar = ({ setSearch }: TopBarProps) => {
+  const navigate = useNavigate();
   const trigger = useScrollTrigger({
     disableHysteresis: true,
     threshold: 100,
@@ -43,6 +45,10 @@ const TopBar = ({ setSearch }: TopBarProps) => {
   const handleSearchDisplay = () => {
     setSearch(true);
   }
+  const handleNavigateToBasePage = () => {
+    navigate('/');
+  }
+
   return (
     <>
       <CssBaseline />
@@ -55,7 +61,14 @@ const TopBar = ({ setSearch }: TopBarProps) => {
       >
         <div className="flex items-center mx-10 my-1">
           <Typography variant="body1" component="div" sx={{ flexGrow: 1, color: baseColor }}>
-            Compbus
+            <Box>
+              <Link onClick={handleNavigateToBasePage} sx={{
+                textDecoration: 'none',
+                '&:hover': {
+                  cursor: 'pointer',
+                },
+              }}>Compbus</Link>
+            </Box>
           </Typography>
           <div className="flex items-center">
             <div className="relative">

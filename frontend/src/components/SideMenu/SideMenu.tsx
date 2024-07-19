@@ -7,7 +7,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import DescriptionIcon from '@mui/icons-material/Description';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import FolderIcon from '@mui/icons-material/Folder';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import { useNavigate } from 'react-router-dom';
 
 interface SideMenuWrapperProps {
     isOpen: boolean;
@@ -32,6 +33,7 @@ interface SideMenuProps {
 
 const SideMenu = ({ isOpen, setIsOpen }: SideMenuProps) => {
     const theme = useTheme();
+    const navigate = useNavigate();
     const buttonStyles = {
         justifyContent: 'flex-start',
         padding: '1rem',
@@ -49,6 +51,9 @@ const SideMenu = ({ isOpen, setIsOpen }: SideMenuProps) => {
         // Implement logout functionality here
     };
 
+    const handleNavigation = (endpoint: string) => {
+        navigate(endpoint);
+    }
     return (
         <SideMenuWrapper theme={theme} isOpen={isOpen}>
             <Container className="flex-auto m-0 p-0 h-full">
@@ -95,10 +100,11 @@ const SideMenu = ({ isOpen, setIsOpen }: SideMenuProps) => {
                         <Button
                             variant="outlined"
                             fullWidth
-                            startIcon={<FolderIcon />}
+                            startIcon={<AddShoppingCartIcon />}
                             sx={buttonStyles}
+                            onClick={() => handleNavigation('/cart')}
                         >
-                            Folder
+                            Cart
                         </Button>
                     </div>
 

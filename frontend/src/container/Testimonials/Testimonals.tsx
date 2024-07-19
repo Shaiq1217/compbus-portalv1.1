@@ -66,20 +66,15 @@ const Testimonials = () => {
                     overflow: 'hidden',
                 }}
             >
-                <Box sx={{ textAlign: 'center', marginBottom: '2rem' }}>
-                    <Typography variant="h4" sx={{ fontWeight: 'bold', marginBottom: '1rem' }}>
-                        Testimonials
-                    </Typography>
-                </Box>
                 <Box
                     sx={{
                         opacity: fadeOut ? 0 : 1,
                         transition: 'opacity 0.5s ease',
                         textAlign: 'center',
-                        marginBottom: '1rem',
+                        paddingTop: '2rem',
                     }}
                 >
-                    <Typography variant="body1">
+                    <Typography variant="body1" sx={{ fontSize: '1.5rem' }}>
                         {testimonials[activeIndex].text}
                     </Typography>
                     <Typography variant="subtitle1" sx={{ marginBottom: '0.5rem', fontWeight: 'bold' }}>

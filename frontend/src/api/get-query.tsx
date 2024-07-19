@@ -20,6 +20,9 @@ const getApi: GetApi = {
   productDetail: {
     url: '/product/field',
   },
+  productByCategory: {
+    url: '/product/category',
+  },
   category: {
     url: '/category',
   },

@@ -1,4 +1,4 @@
-import { Box, Button, Typography, useTheme, Grid, Container } from '@mui/material';
+import { Box, Button, Typography, useTheme, Grid, Container, AlertColor } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { IProduct } from 'src/@types/shared';
 import useGetQuery from 'src/api/get-query';
@@ -9,6 +9,8 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 interface ProductDetailProps {
     productDetail: IProduct;
+    handleCartClick?: (action: any, item: IProduct) => void;
+    handleBuyNowClick?: (action: any) => void;
 }
 
 interface DetailField {
@@ -19,7 +21,7 @@ interface DetailField {
     max?: number;
 }
 
-const ProductDetail = ({ productDetail }: ProductDetailProps) => {
+const ProductDetail = ({ productDetail, handleBuyNowClick, handleCartClick }: ProductDetailProps) => {
     const theme = useTheme();
     const { data: details, isLoading, error } = useGetQuery<any, DetailField[]>('productDetail', productDetail._id);
     const [date, setDate] = useState<string | undefined>(undefined);
@@ -134,6 +136,7 @@ const ProductDetail = ({ productDetail }: ProductDetailProps) => {
                                     color="primary"
                                     startIcon={<AddShoppingCartIcon />}
                                     sx={{ flex: 1, mr: 1, height: '3rem', width: 'calc(50% - 8px)' }}
+                                    onClick={() => handleCartClick && handleCartClick({ message: 'Added to your cart', severity: 'success' }, productDetail)}
                                 >
                                     Add to Cart
                                 </Button>
@@ -142,6 +145,8 @@ const ProductDetail = ({ productDetail }: ProductDetailProps) => {
                                     color="primary"
                                     startIcon={<ShoppingCartIcon />}
                                     sx={{ flex: 1, ml: 1, height: '3rem', width: 'calc(50% - 8px)' }}
+                                    onClick={() => handleBuyNowClick && handleBuyNowClick({ message: 'Buy Now', severity: 'success' })}
+
                                 >
                                     Buy Now
                                 </Button>
