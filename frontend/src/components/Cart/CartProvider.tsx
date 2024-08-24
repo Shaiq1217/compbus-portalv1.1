@@ -1,17 +1,8 @@
-// CartContext.tsx
-
 import { createContext, useContext, useReducer, ReactNode } from 'react';
-import { IProduct } from 'src/@types/shared';
-
-// Define the shape of cart state
-interface CartState {
-    items: IProduct[];
-    totalItems: number;
-    totalPrice: number;
-}
+import { ICart, ICartState, IProduct } from 'src/@types/shared';
 
 // Initial state of the cart
-const initialCartState: CartState = {
+const initialCartState: ICartState = {
     items: [],
     totalItems: 0,
     totalPrice: 0,
@@ -26,7 +17,7 @@ export const actions = {
 };
 
 // Actions to update the cart
-const cartReducer = (state: CartState, action: any) => {
+const cartReducer = (state: ICartState, action: any) => {
     switch (action.type) {
         case actions.ADD_TO_CART:
             // Logic to add item to cart
@@ -72,7 +63,7 @@ const calculateTotalPrice = (items: IProduct[]): number => {
 
 // Create context for cart state and actions
 const CartContext = createContext<{
-    cartState: CartState;
+    cartState: ICartState;
     addToCart: (item: IProduct) => void;
     removeFromCart: (item: IProduct) => void;
     updateQuantity: (id: string, quantity: number) => void;
@@ -80,7 +71,7 @@ const CartContext = createContext<{
 } | undefined>(undefined);
 
 // Custom hook to use cart context
-export const useCart = () => {
+export const useCart = (): ICart => {
     const context = useContext(CartContext);
     if (!context) {
         throw new Error('useCart must be used within a CartProvider');

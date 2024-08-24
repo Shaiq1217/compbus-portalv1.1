@@ -14,11 +14,11 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route element={<RequireAuth />}>
-        <Route path="/" element={
-          <PageLayout >
-            <Home />
-          </PageLayout>} />
       </Route>
+      <Route path="/" element={
+        <PageLayout >
+          <Home />
+        </PageLayout>} />
       <Route path="/products/:productId" element={
         <PageLayout >
           <Product />
